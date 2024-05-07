@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  postgresql:
+    container_name: propostaDB
+    image: 'bitnami/postgresql:13-debian-12'
+    environment:
+      - POSTGRESQL_USERNAME=user
+      - POSTGRESQL_PASSWORD=user
+      - POSTGRESQL_DATABASE=estudo
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+
+  rabbitmq:
+    container_name: rabbit
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    labels:
+      name: "rabbitmq"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - ./conf-rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.config
+
+volumes:
+  postgresql_data:
+    driver: local
