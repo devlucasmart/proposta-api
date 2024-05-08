@@ -26,7 +26,8 @@ services:
       - ./conf-rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.config
 
   proposta-api:
-    build: .
+#    build: .
+    image: "lord143/proposta-api"
     container_name: proposta-api
     ports:
       - "8080:8080"
