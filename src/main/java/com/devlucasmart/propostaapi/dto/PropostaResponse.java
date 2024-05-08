@@ -12,6 +12,6 @@ public class PropostaResponse {
     private Double renda;
     private Double solicitado;
     private int prazoPagamento;
-    private Boolean aprovado;
+    private Boolean aprovada;
     private String observacao;
 }
