@@ -1,5 +1,6 @@
 package com.devlucasmart.propostaapi.service;
 
+import com.devlucasmart.propostaapi.comum.exception.ValidacaoException;
 import com.devlucasmart.propostaapi.dto.PropostaRequest;
 import com.devlucasmart.propostaapi.dto.PropostaResponse;
 import com.devlucasmart.propostaapi.entity.Proposta;
@@ -18,6 +19,11 @@ public class PropostaService {
     public List<PropostaResponse> findAll() {
         var propostas = repository.findAll();
         return PropostaMapper.INSTANCE.toListResponse(propostas);
+    }
+
+    public PropostaResponse findById(Long id) {
+        var proposta = repository.findById(id).orElseThrow(() -> new ValidacaoException("Proposta Não Encontrada"));
+        return PropostaMapper.INSTANCE.toResponse(proposta);
     }
 
     public PropostaResponse save(PropostaRequest request) {

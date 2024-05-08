@@ -1,0 +1,26 @@
+name: Build e Envio para Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v2
+
+      # Construir a imagem Docker
+      - name: Build Docker image
+        run: docker build -t lord143/proposta-api .
+
+      # Autenticar no Docker Hub
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u lord143 --password-stdin
+
+      # Enviar a imagem para o Docker Hub
+      - name: Push image to Docker Hub
+        run: docker push lord143/proposta-api

@@ -25,6 +25,15 @@ services:
     volumes:
       - ./conf-rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.config
 
+  proposta-api:
+    build: .
+    container_name: proposta-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
+      - rabbit
+
 volumes:
   postgresql_data:
     driver: local

@@ -24,14 +24,11 @@ public interface PropostaMapper {
     @Mapping(target = "observacao", ignore = true)
     Proposta toDomain(PropostaRequest request);
 
-    PropostaRequest toRequest(Proposta proposta);
-
     @Mapping(target = "nome", source = "usuario.nome")
     @Mapping(target = "sobrenome", source = "usuario.sobrenome")
     @Mapping(target = "telefone", source = "usuario.telefone")
     @Mapping(target = "cpf", source = "usuario.cpf")
     @Mapping(target = "renda", source = "usuario.renda")
-    @Mapping(target = "aprovada", source = "usuario.aprovada")
     PropostaResponse toResponse(Proposta proposta);
 
     List<PropostaResponse> toListResponse(List<Proposta> proposta);
