@@ -29,6 +29,7 @@ Este é um sistema para cadastro de Proposta de credito e seus usuarios desenvol
 2. Navegue até o diretório do projeto: `cd proposta-api`
 3. Configure as propriedades do banco de dados em `src/main/resources/application.yml`.
 4. Execute o comando para levantar os containers do RabbitMQ e do PostgreSQL: `docker-compose up -d`.
+5. Execute o comando para levantar o container do frontend: `docker run -d -p 80:80 --name front-microservices matheuspieropan/proposta-web`
 5. Execute o projeto: `mvn spring-boot:run`.
 
 ## Documentação

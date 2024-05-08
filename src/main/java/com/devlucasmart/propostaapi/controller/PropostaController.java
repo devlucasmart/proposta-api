@@ -23,8 +23,7 @@ public class PropostaController {
 
     @GetMapping
     public ResponseEntity<List<PropostaResponse>> findAll() {
-        var responseList = service.findAll();
-        return ResponseEntity.ok(responseList);
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("{id}")

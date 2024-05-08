@@ -17,8 +17,7 @@ public class PropostaService {
     private final PropostaRepository repository;
 
     public List<PropostaResponse> findAll() {
-        var propostas = repository.findAll();
-        return PropostaMapper.INSTANCE.toListResponse(propostas);
+        return PropostaMapper.INSTANCE.toListResponse(repository.findAll());
     }
 
     public PropostaResponse findById(Long id) {
