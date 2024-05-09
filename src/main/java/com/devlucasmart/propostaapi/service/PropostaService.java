@@ -21,7 +21,7 @@ public class PropostaService {
     }
 
     public PropostaResponse findById(Long id) {
-        var proposta = repository.findById(id).orElseThrow(() -> new ValidacaoException("Proposta Não Encontrada"));
+        var proposta = getById(id);
         return PropostaMapper.INSTANCE.toResponse(proposta);
     }
 
@@ -29,5 +29,9 @@ public class PropostaService {
         var proposta = PropostaMapper.INSTANCE.toDomain(request);
         repository.save(proposta);
         return PropostaMapper.INSTANCE.toResponse(proposta);
+    }
+
+    private Proposta getById(Long id){
+        return repository.findById(id).orElseThrow(() -> new ValidacaoException("Proposta Não Encontrada"));
     }
 }

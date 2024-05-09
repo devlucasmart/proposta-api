@@ -10,7 +10,7 @@ public class PropostaResponse {
     private String cpf;
     private String telefone;
     private Double renda;
-    private Double solicitado;
+    private String valorSolicitadoFmt;
     private int prazoPagamento;
     private Boolean aprovada;
     private String observacao;
