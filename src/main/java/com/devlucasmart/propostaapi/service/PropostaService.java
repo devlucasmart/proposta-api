@@ -6,17 +6,25 @@ import com.devlucasmart.propostaapi.dto.PropostaResponse;
 import com.devlucasmart.propostaapi.entity.Proposta;
 import com.devlucasmart.propostaapi.mappers.PropostaMapper;
 import com.devlucasmart.propostaapi.repository.PropostaRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PropostaService {
     private final PropostaRepository repository;
-
     private final NotificacaoService notificacaoService;
+
+    private final String exchange;
+
+    public PropostaService(PropostaRepository repository,
+                           NotificacaoService notificacaoService,
+                           @Value("${rabbitmq.propostapendente.exchange}") String exchange) {
+        this.repository = repository;
+        this.notificacaoService = notificacaoService;
+        this.exchange = exchange;
+    }
 
     public List<PropostaResponse> findAll() {
         return PropostaMapper.INSTANCE.toListResponse(repository.findAll());
@@ -32,11 +40,11 @@ public class PropostaService {
         repository.save(proposta);
         var response = PropostaMapper.INSTANCE.toResponse(proposta);
 
-        notificacaoService.notificar(response, "proposta-pendente.ex");
+        notificacaoService.notificar(response, exchange);
         return response;
     }
 
-    private Proposta getById(Long id){
+    private Proposta getById(Long id) {
         return repository.findById(id).orElseThrow(() -> new ValidacaoException("Proposta Não Encontrada"));
     }
 }
