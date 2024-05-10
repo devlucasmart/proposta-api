@@ -16,6 +16,8 @@ import java.util.List;
 public class PropostaService {
     private final PropostaRepository repository;
 
+    private final NotificacaoService notificacaoService;
+
     public List<PropostaResponse> findAll() {
         return PropostaMapper.INSTANCE.toListResponse(repository.findAll());
     }
@@ -28,7 +30,10 @@ public class PropostaService {
     public PropostaResponse save(PropostaRequest request) {
         var proposta = PropostaMapper.INSTANCE.toDomain(request);
         repository.save(proposta);
-        return PropostaMapper.INSTANCE.toResponse(proposta);
+        var response = PropostaMapper.INSTANCE.toResponse(proposta);
+
+        notificacaoService.notificar(response, "proposta-pendente.ex");
+        return response;
     }
 
     private Proposta getById(Long id){
