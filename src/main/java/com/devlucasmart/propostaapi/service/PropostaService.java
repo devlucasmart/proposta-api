@@ -14,12 +14,12 @@ import java.util.List;
 @Service
 public class PropostaService {
     private final PropostaRepository repository;
-    private final NotificacaoService notificacaoService;
+    private final NotificacaoRabbitService notificacaoService;
 
     private final String exchange;
 
     public PropostaService(PropostaRepository repository,
-                           NotificacaoService notificacaoService,
+                           NotificacaoRabbitService notificacaoService,
                            @Value("${rabbitmq.propostapendente.exchange}") String exchange) {
         this.repository = repository;
         this.notificacaoService = notificacaoService;
@@ -38,10 +38,19 @@ public class PropostaService {
     public PropostaResponse save(PropostaRequest request) {
         var proposta = PropostaMapper.INSTANCE.toDomain(request);
         repository.save(proposta);
-        var response = PropostaMapper.INSTANCE.toResponse(proposta);
 
-        notificacaoService.notificar(response, exchange);
-        return response;
+        notificarRabbitMQ(proposta);
+        notificacaoService.notificar(proposta, exchange);
+        return PropostaMapper.INSTANCE.toResponse(proposta);
+    }
+
+    public void notificarRabbitMQ(Proposta proposta) {
+        try {
+            notificacaoService.notificar(proposta, exchange);
+        } catch (RuntimeException ex) {
+            proposta.setIntegrada(false);
+            repository.save(proposta);
+        }
     }
 
     private Proposta getById(Long id) {

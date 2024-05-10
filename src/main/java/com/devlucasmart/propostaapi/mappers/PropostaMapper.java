@@ -22,7 +22,7 @@ public interface PropostaMapper {
     @Mapping(target = "valorSolicitado", source = "valorSolicitado")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "aprovada", ignore = true)
-    @Mapping(target = "integrada", ignore = true)
+    @Mapping(target = "integrada", constant = "true")
     @Mapping(target = "observacao", ignore = true)
     Proposta toDomain(PropostaRequest request);
 
