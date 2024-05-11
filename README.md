@@ -35,5 +35,8 @@ Este é um sistema para cadastro de Proposta de credito e seus usuarios desenvol
 ## Documentação
 - Link: http://localhost:8080/swagger-ui/index.html#/
 
+## Microserviços
+- notificacao: https://github.com/devlucasmart/notificacao-api  
+
 ## Estrutura das Filas e Exchanges Configuradas
 ![Estrutura dos Microservices](src/main/resources/img/microservicesRabbitMQ.jpeg)
