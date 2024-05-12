@@ -7,6 +7,7 @@ import com.devlucasmart.propostaapi.entity.Proposta;
 import com.devlucasmart.propostaapi.mappers.PropostaMapper;
 import com.devlucasmart.propostaapi.repository.PropostaRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,15 @@ import java.util.List;
 public class PropostaService {
     private final PropostaRepository repository;
     private final NotificacaoRabbitService notificacaoService;
-
+    private final SimpMessagingTemplate template;
     private final String exchange;
 
     public PropostaService(PropostaRepository repository,
                            NotificacaoRabbitService notificacaoService,
-                           @Value("${rabbitmq.propostapendente.exchange}") String exchange) {
+                           SimpMessagingTemplate template, @Value("${rabbitmq.propostapendente.exchange}") String exchange) {
         this.repository = repository;
         this.notificacaoService = notificacaoService;
+        this.template = template;
         this.exchange = exchange;
     }
 
