@@ -17,6 +17,10 @@ spring:
     password: guest
 
 rabbitmq:
+  queue:
+    proposta:
+      concluida: proposta-concluida.ms-proposta
+
   propostapendente:
     exchange: proposta-pendente.ex
   propostaconcluida:
