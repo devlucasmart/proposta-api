@@ -60,7 +60,7 @@ public class RabbitMQConfiguration {
 
     @Bean
     public Queue criarFilaPropostaPendenteNoticacaoMsNotificacaoDlq() {
-        return QueueBuilder.durable("proposta-pendente-Ms-Notificacao.dlq").build();
+        return QueueBuilder.durable("proposta-pendente-ms-notificacao.dlq").build();
     }
 
     @Bean
