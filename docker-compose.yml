@@ -3,6 +3,7 @@ version: '3.1'
 services:
   postgresql:
     container_name: propostaDB
+    hostname: propostaDB
     image: 'bitnami/postgresql:13-debian-12'
     environment:
       - POSTGRESQL_USERNAME=user
@@ -26,14 +27,12 @@ services:
       - ./conf-rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.config
 
   proposta-api:
-#    build: .
-    image: "lord143/proposta-api"
+    image: "lord143/proposta-api:4"
+    environment:
+      spring.profiles.active: prod
     container_name: proposta-api
     ports:
       - "8080:8080"
-    depends_on:
-      - postgresql
-      - rabbit
 
 volumes:
   postgresql_data:

@@ -1,22 +1,12 @@
 # Usa a imagem oficial do Maven 3.8.5 como base
-FROM maven:3.8.5-openjdk-17 AS build
+FROM maven:3.8.5-openjdk-17
 
-# Define o diretório de trabalho dentro do container
-WORKDIR /app
+COPY target/proposta-api-0.0.1-SNAPSHOT.jar app.jar
 
-# Copia o arquivo pom.xml para o diretório de trabalho
-COPY pom.xml .
+COPY wait-for-it.sh wait-for-it.sh
 
-# Baixa as dependências do Maven
-RUN mvn dependency:go-offline
+RUN chmod +x wait-for-it.sh
 
-# Copia os arquivos do código-fonte para o diretório de trabalho
-COPY src ./src
+EXPOSE 8080
 
-# Compila o código-fonte
-RUN mvn package
-
-# Agora não há necessidade de definir a segunda fase usando o OpenJDK 17, pois já fizemos tudo o que precisamos na primeira fase.
-
-# Define o comando padrão para executar o aplicativo quando o contêiner for iniciado
-CMD ["java", "-jar", "target/*.jar"]
+ENTRYPOINT ["./wait-for-it.sh", "rabbit:5672", "--", "java", "-Duser.language=pt", "-Duser.country=BR", "-jar", "app.jar"]

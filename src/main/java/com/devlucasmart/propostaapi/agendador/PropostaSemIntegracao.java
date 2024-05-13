@@ -5,6 +5,7 @@ import com.devlucasmart.propostaapi.repository.PropostaRepository;
 import com.devlucasmart.propostaapi.service.NotificacaoRabbitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

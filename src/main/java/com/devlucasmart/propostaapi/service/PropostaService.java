@@ -6,6 +6,7 @@ import com.devlucasmart.propostaapi.dto.PropostaResponse;
 import com.devlucasmart.propostaapi.entity.Proposta;
 import com.devlucasmart.propostaapi.mappers.PropostaMapper;
 import com.devlucasmart.propostaapi.repository.PropostaRepository;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -41,14 +42,20 @@ public class PropostaService {
         var proposta = PropostaMapper.INSTANCE.toDomain(request);
         repository.save(proposta);
 
-        notificarRabbitMQ(proposta);
-        notificacaoService.notificar(proposta, exchange);
+        var prioridade = proposta.getUsuario().getRenda() > 1000 ? 10 : 5;
+
+        MessagePostProcessor messagePostProcessor = message -> {
+            message.getMessageProperties().setPriority(prioridade);
+            return message;
+        };
+
+        notificarRabbitMQ(proposta, messagePostProcessor);
         return PropostaMapper.INSTANCE.toResponse(proposta);
     }
 
-    public void notificarRabbitMQ(Proposta proposta) {
+    public void notificarRabbitMQ(Proposta proposta, MessagePostProcessor messagePostProcessor) {
         try {
-            notificacaoService.notificar(proposta, exchange);
+            notificacaoService.notificar(proposta, exchange, messagePostProcessor);
         } catch (RuntimeException ex) {
             proposta.setIntegrada(false);
             repository.save(proposta);
